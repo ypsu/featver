@@ -18,12 +18,12 @@ As of 2024 the established versioning scheme is semver.
 But its very strict: it does not allow evolving software in place.
 People who try to evolve software through MINOR changes break others and cause drama.
 Or if they don't want that then they would need to keep broken APIs forever around until the next MAJOR update which might come never for stable projects.
-Example drama: https://github.com/jashkenas/underscore/issues/1805 and its hackernews discussion at https://news.ycombinator.com/item?id=8244700.
+Example drama: [https://github.com/jashkenas/underscore/issues/1805](https://github.com/jashkenas/underscore/issues/1805) and its hackernews discussion at [https://news.ycombinator.com/item?id=8244700](https://news.ycombinator.com/item?id=8244700).
 
 calver tries to answer the problem by giving up semantic versioning completely.
 But this is also frustrating for both the software authors and its users: it's unclear what a new version entails.
 The versioning scheme is simply a date which cannot differentiate between "this is just a minor update, feel free to update" vs "this is a major update, update with care".
-Furthermore https://calver.org doesn't give exact guidelines on the versioning scheme other than listing some example projects that have a date component in their versioning scheme.
+Furthermore [calver.org](https://calver.org) doesn't give exact guidelines on the versioning scheme other than listing some example projects that have a date component in their versioning scheme.
 
 featver tries to give a specific, semver-tooling compatible scheme with specific rules that allow in place evolution and also allow communicating large changes requiring manual update.
 
@@ -79,7 +79,7 @@ This scheme allows catering to users desiring rapid releases (they can follow v0
 ## Example: Go modules
 
 Go tooling requires the use of semver but featver is compatible with that.
-In Go MAJOR version bumps require significant changes: v2+ versions must be in their own subdirectory, see https://go.dev/blog/v2-go-modules.
+In Go MAJOR version bumps require significant changes: v2+ versions must be in their own subdirectory, see [https://go.dev/blog/v2-go-modules](https://go.dev/blog/v2-go-modules).
 This is why a simple date based versioning scheme such as YY.MMDD.PATCH couldn't work for Go.
 But featver allows in-place evolution so a Go module could use v1 indefinitely.
 
@@ -140,7 +140,9 @@ This document is still a draft, will be marked as v1 once a few people reviewed 
 
 **0.240803.1 [pending]:**
 
+- fix: linkify links so that it works on github.io too.
 - fix: add the github discussions link.
+- fix: fix some other small typos.
 
 **0.240803.0:**
 
@@ -148,5 +150,5 @@ This document is still a draft, will be marked as v1 once a few people reviewed 
 
 ## Feedback and discussion about featver
 
-See https://github.com/ypsu/featver/discussions.
+See [https://github.com/ypsu/featver/discussions](https://github.com/ypsu/featver/discussions).
 Feel free to open new topics.
