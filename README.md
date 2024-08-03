@@ -24,7 +24,7 @@ As of 2024 the established versioning scheme is semver.
 But its very strict: it does not allow evolving software in place.
 People who try to evolve software through MINOR changes break others and cause drama.
 Or if they don't want that then they would need to keep broken APIs forever around until the next MAJOR update which might come never for stable projects.
-Or they just give up on semver altogether and use [0ver](https://0ver.org).
+Or they just give up on semver altogether and use [zerover](https://0ver.org).
 Example drama about semver: [https://github.com/jashkenas/underscore/issues/1805](https://github.com/jashkenas/underscore/issues/1805) and its hackernews discussion at [https://news.ycombinator.com/item?id=8244700](https://news.ycombinator.com/item?id=8244700).
 
 calver tries to answer the problem by giving up semantic versioning completely.
@@ -155,7 +155,7 @@ This document is still a draft, will be marked as v1 once a few people reviewed 
 
 - new: add the UI example.
 - new: highlight that this is a voluntary commitment.
-- change: mention [0ver](https://0ver.org) and [chronver](https://chronver.org).
+- change: mention [zerover](https://0ver.org) and [chronver](https://chronver.org).
 - fix: linkify links so that it works on github.io too.
 - fix: add the github discussions link.
 - fix: fix some other small typos.
