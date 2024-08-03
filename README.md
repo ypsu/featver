@@ -1,6 +1,6 @@
 # featver: feature stability oriented versioning scheme
 
-featver is [semver](https://semver.org) tooling compatible, [calver](https://calver.org) inspired versioning scheme for software with rapidly changing features.
+featver is a [semver](https://semver.org) tooling compatible, [calver](https://calver.org) inspired versioning scheme for software with rapidly changing features.
 featver versioned software promises to follow these principles:
 
 1. Uses MAJOR.YYMMDD.PATCH as its versioning scheme.
