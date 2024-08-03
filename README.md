@@ -138,11 +138,15 @@ Recommended tags in priority order:
 This is the changelog of this document mostly for the sake of an example.
 This document is still a draft, will be marked as v1 once a few people reviewed it.
 
+**0.240803.1 [pending]:**
+
+- fix: add the github discussions link.
+
 **0.240803.0:**
 
 - new: finish the draft version.
 
 ## Feedback and discussion about featver
 
-See github discussions.
+See https://github.com/ypsu/featver/discussions.
 Feel free to open new topics.
