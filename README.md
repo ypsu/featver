@@ -70,7 +70,7 @@ The MAJOR.YYMMDD.PATCH versioning scheme has 3 components:
 
 The MAJOR part of the version number is manually incremented whenever an incompatible change is being made or otherwise a manual update is desired.
 
-MAJOR version is 0 is special though: the 6 month compatibility guarantee doesn't apply there.
+MAJOR version 0 is special though: the 6 month compatibility guarantee doesn't apply there.
 It's meant to be used for development versions.
 It might make sense for the v0 branch to not follow YYMMDD for the middle part of the version but something like YYMMDDHHMMSS.
 E.g. a continuous build tool might be making v0 versions after each commit and then a weekly cronjob just stamps a v1 version tag on the latest green v0 version.
