@@ -30,6 +30,7 @@ calver tries to answer the problem by giving up semantic versioning completely.
 But this is also frustrating for both the software authors and its users: it's unclear what a new version entails.
 The versioning scheme is simply a date which cannot differentiate between "this is just a minor update, feel free to update" vs "this is a major update, update with care".
 Furthermore [calver.org](https://calver.org) doesn't give exact guidelines on the versioning scheme other than listing some example projects that have a date component in their versioning scheme.
+For that there's [chronver.org](https://chronver.org/) but that is incompatible with semver tooling so it doesn't work for Go modules.
 
 featver tries to give a specific, semver-tooling compatible scheme with specific rules that allow in place evolution and also allow communicating large changes requiring manual update.
 
@@ -153,6 +154,7 @@ This document is still a draft, will be marked as v1 once a few people reviewed 
 
 - new: add the UI example.
 - new: highlight that this is a voluntary commitment.
+- change: mention [chronver.org][https://chronver.org].
 - fix: linkify links so that it works on github.io too.
 - fix: add the github discussions link.
 - fix: fix some other small typos.
