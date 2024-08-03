@@ -84,6 +84,14 @@ It might make sense for the v0 branch to not follow YYMMDD for the middle part o
 E.g. a continuous build tool might be making v0 versions after each commit and then a weekly cronjob just stamps a v1 version tag on the latest green v0 version.
 This scheme allows catering to users desiring rapid releases (they can follow v0) and to users desiring infrequent but stable releases (they can follow v1).
 
+## Variants
+
+Some systems might impose limits on the version number components such as they have to be less than 65536.
+[Browser extension](https://developer.chrome.com/docs/extensions/reference/manifest/version) versions are one example.
+
+In that case a MAJOR.YYMM.PATCH (month resolution) or MAJOR.YYWW.PATCH (week resolution) could work just as well in exchange for a reduced max release cadence.
+If going with the week version then use ISO weeks as generated via `date +%g%V` on linux: 2021-01-02 in YYWW format is 2053.
+
 ## Example: Go modules
 
 Go tooling requires the use of semver but featver is compatible with that.
@@ -131,14 +139,6 @@ They won't need to interrupt whatever they were doing and go down a migration ra
 The user interfaces of desktop and web applications should allow reverting to previous appearances for at least 6 months whenever an UI refresh happens that shuffles the buttons around.
 Just have a settings page somewhere where the user can revert and render the old UI if a user's cookie wants the legacy UI.
 
-## Variants
-
-Some systems might impose limits on the version number components such as they have to be less than 65536.
-[Browser extension](https://developer.chrome.com/docs/extensions/reference/manifest/version) versions are one example.
-
-In that case a MAJOR.YYMM.PATCH (month resolution) or MAJOR.YYWW.PATCH (week resolution) could work just as well in exchange for a reduced max release cadence.
-If going with the week version then use ISO weeks as generated via `date +%g%V` on linux: 2021-01-02 in YYWW format is 2053.
-
 ## Changelog
 
 Users can learn about feature changes from the changelog.
@@ -161,9 +161,9 @@ This document is still a draft, will be marked as v1 once a few people reviewed 
 
 **0.[pending].0:**
 
-- new: add the UI example.
-- new: highlight that this is a voluntary commitment.
 - new: mention the monthly and weekly variants.
+- new: highlight that this is a voluntary commitment.
+- new: add the UI example.
 - change: mention [zerover](https://0ver.org) and [chronver](https://chronver.org).
 - fix: linkify links so that it works on github.io too.
 - fix: add the github discussions link.
