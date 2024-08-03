@@ -154,7 +154,7 @@ This document is still a draft, will be marked as v1 once a few people reviewed 
 
 - new: add the UI example.
 - new: highlight that this is a voluntary commitment.
-- change: mention [chronver.org][https://chronver.org].
+- change: mention [chronver.org](https://chronver.org).
 - fix: linkify links so that it works on github.io too.
 - fix: add the github discussions link.
 - fix: fix some other small typos.
