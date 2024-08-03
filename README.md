@@ -118,6 +118,11 @@ Users can then set this in their .bashrc.
 If something breaks after an update then user can remove that flag from their .bashrc and investigate migration when they have some free time.
 They won't need to interrupt whatever they were doing and go down a migration rabbit hole at the most inappropriate times.
 
+## Example: User interfaces
+
+The user interfaces of desktop and web applications should allow reverting to previous appearances for at least 6 months whenever an UI refresh happens that shuffles the buttons around.
+Just have a settings page somewhere where the user can revert and render the old UI if a user's cookie wants the legacy UI.
+
 ## Changelog
 
 Users can learn about feature changes from the changelog.
@@ -138,8 +143,9 @@ Recommended tags in priority order:
 This is the changelog of this document mostly for the sake of an example.
 This document is still a draft, will be marked as v1 once a few people reviewed it.
 
-**0.240803.1 [pending]:**
+**0.[pending].0:**
 
+- new: add the UI example.
 - fix: linkify links so that it works on github.io too.
 - fix: add the github discussions link.
 - fix: fix some other small typos.
