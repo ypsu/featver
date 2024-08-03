@@ -1,7 +1,7 @@
 # featver: feature stability oriented versioning scheme
 
 featver is a [semver](https://semver.org) tooling compatible, [calver](https://calver.org) inspired versioning scheme for software with rapidly changing features.
-featver versioned software promises to follow these principles:
+A featver versioned software commits to these principles:
 
 1. Uses MAJOR.YYMMDD.PATCH as its versioning scheme.
 2. Separates the stable and unsupported features in documentation and provides tooling to disable unsupported features.
@@ -11,6 +11,12 @@ featver versioned software promises to follow these principles:
 featver is mostly compatible with semver and semver rules apply to featver too.
 The biggest difference is in how the middle part is handled: featver replaces MINOR with YYMMDD.
 This means that semver's rules about MINOR version bumps don't apply to featver.
+
+These commitments are voluntary.
+But giving such commitment signals that a piece of software deeply cares about its users and wants to ensure its users have a smooth ride through its rapidly changing features.
+6 months is the minimum, it can be more.
+Gold standard is Go: new Go versions never break older Go versions.
+But such standard is impractical for most small software.
 
 ## Motivation
 
@@ -140,12 +146,13 @@ Recommended tags in priority order:
 
 ## Changelog of featver
 
-This is the changelog of this document mostly for the sake of an example.
+This is the changelog of this document mostly for the sake of an example and thus a bit exaggerated.
 This document is still a draft, will be marked as v1 once a few people reviewed it.
 
 **0.[pending].0:**
 
 - new: add the UI example.
+- new: highlight that this is a voluntary commitment.
 - fix: linkify links so that it works on github.io too.
 - fix: add the github discussions link.
 - fix: fix some other small typos.
