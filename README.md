@@ -94,10 +94,11 @@ If going with the week version then use ISO weeks as generated via `date +%g%V` 
 
 ## Example: Go modules
 
-Go tooling requires the use of semver but featver is compatible with that.
-In Go MAJOR version bumps require significant changes: v2+ versions must be in their own subdirectory, see [https://go.dev/blog/v2-go-modules](https://go.dev/blog/v2-go-modules).
+Per [https://go.dev/doc/modules/version-numbers](https://go.dev/doc/modules/version-numbers) Go tooling requires the use of semver.
+Furthermore Go MAJOR version bumps are disruptive because they require significant changes: v2+ versions must be in their own subdirectory, see [https://go.dev/blog/v2-go-modules](https://go.dev/blog/v2-go-modules) and [https://go.dev/doc/modules/release-workflow#breaking](https://go.dev/doc/modules/release-workflow#breaking).
 This is why a simple date based versioning scheme such as YY.MMDD.PATCH couldn't work for Go.
 But featver allows in-place evolution so a Go module could use v1 indefinitely.
+A featver Go module breaks Go module versioning commitments so tread carefully.
 
 Put all unsupported functions into files guarded with the `//go:build !stable_features_only` [build constraint](https://pkg.go.dev/cmd/go#hdr-Build_constraints).
 This means that `-tags=stable_features_only` builds won't include these files.
@@ -165,6 +166,7 @@ This document is still a draft, will be marked as v1 once a few people reviewed 
 - new: highlight that this is a voluntary commitment.
 - new: add the UI example.
 - change: mention [zerover](https://0ver.org) and [chronver](https://chronver.org).
+- change: add more Go documentation links as reference.
 - fix: linkify links so that it works on github.io too.
 - fix: add the github discussions link.
 - fix: fix some other small typos.
