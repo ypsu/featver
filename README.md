@@ -164,14 +164,14 @@ _.template("Using 'with': <%= data.answer %>", {variable: 'data'})({answer: 'no'
 ```
 
 And this change had to be made at the same time the update happened.
-This is annoying and makes updates risky because it makes the local code changes cannot be tested in isolation.
+This is annoying and makes updates risky because the local code changes cannot be tested in isolation.
 
 With featver underscore v1.140826.0 would have made the multiargument `template` unsupported and would have added a newly supported `template2(templateString, [settings])` function.
 So teams having a nightly test with `underscore-esm-min-stable_features_only.js` would have noticed the incompatibility after the update and could apply the fix of migrating to `template2` when they had time.
 Otherwise `template`'s implementation would have remained `_.template(templateString, [data], [settings])` in the normal version.
 
 The breaking change would have been appeared in v1.150219.0 (equivalent to [1.8.0](https://underscorejs.org/#1.8.0)).
-In there `_.template(templateString, [data], [settings])` could be changed to `_.template(templateString, [settings])` because the multiargument version was unsupported.
+In there `_.template(templateString, [data], [settings])` can be changed to `_.template(templateString, [settings])` because the multiargument version was unsupported.
 The users had ~6 months to migrate.
 The new 2 argument `template` can be marked as stable.
 Furthermore the previously introduced `template2` would be no longer needed so it can be marked as unsupported and then removed in a future release.
@@ -180,7 +180,7 @@ Users can migrate back to `template` which should be equivalent to `template2` a
 The users have to change their code 2 times.
 But both times they have 6 months to do it whenever they have time rather part of a large update that might break many other things too.
 And the second change is very trivial function rename.
-So overall this should be a less risky way to manage changes.
+Due to the relaxed timeframe this would have been a less stressful way to make this change.
 
 ## Changelog
 
@@ -199,10 +199,10 @@ Recommended tags in priority order:
 
 ## Notes
 
-### How strict are the rules? What when urgent incompatible changes are required by sensitive security issue?
+### How strict are the rules? What if urgent incompatible changes are required by sensitive security issue?
 
 There will be cases sometimes when the compatibility has to broken early due to various issues.
-featver should be considered as a set of principles or guidelines to strive for rather than strict rules for.
+featver should be considered as a set of principles or guidelines to strive for rather than strict rules.
 It's OK for pragmatism to prevail occasionally.
 This document avoids [RFC 2119](https://datatracker.ietf.org/doc/html/rfc2119) level of precision in order to encourage projects to implement or adjust featver in the way it makes most sense for them.
 
