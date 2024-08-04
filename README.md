@@ -160,7 +160,7 @@ Recommended tags in priority order:
 This is the changelog of this document mostly for the sake of an example and thus a bit exaggerated.
 This document is still a draft, will be marked as v1 once a few people reviewed it.
 
-**0.[pending].0:**
+**0.240804.0:**
 
 - new: mention the monthly and weekly variants.
 - new: highlight that this is a voluntary commitment.
