@@ -197,6 +197,9 @@ Recommended tags in priority order:
 - new: this is a new feature, should not cause any problems during upgrades.
 - info: this is not a change, just an informational message.
 
+It's important to put the breaking changes to the top and highlight them.
+For example in the above referenced underscore example, the `template` related breaking change was mentioned only at the end so it was very easy to miss: [https://underscorejs.org/#1.7.0](https://underscorejs.org/#1.7.0).
+
 ## Notes
 
 ### How strict are the rules? What if urgent incompatible changes are required by sensitive security issue?
