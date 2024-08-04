@@ -5,7 +5,7 @@ A featver versioned software commits to these principles:
 
 1. Uses MAJOR.YYMMDD.PATCH as its versioning scheme.
 2. Separates the stable and unsupported features in documentation and provides tooling to disable unsupported features.
-3. Stable features remain available for at least 6 months before removal within a MAJOR version.
+3. Keeps stable features for at least 6 months before removing them within a MAJOR version.
 4. Publishes a changelog that documents changes in the stable features.
 
 featver is mostly compatible with semver and semver rules apply to featver too.
@@ -69,7 +69,7 @@ The MAJOR.YYMMDD.PATCH versioning scheme has 3 components:
 - MAJOR: This component is the "semantic" part of the version.
   When this version is bumped then users of the software are expected to manually update because this change can contain many breaking changes.
 - YYMMDD: This is the date when the release was made.
-  The aim of using a date here is to aid the software users estimate the amount of changes between versions.
+  The aim of using a date here is to aid the software users clear expectations about the nature of changes between versions.
   If the date between two versions is less than 6 months, the update can be considered safe and any small incompatibility should be easily resolvable per instructions in the changelog.
 - PATCH: This is meant for small bugfixes.
   This should contain no breaking changes in the stable feature set compared to a previous PATCH release in the same MAJOR.YYMMDD version.
@@ -80,9 +80,7 @@ The MAJOR part of the version number is manually incremented whenever an incompa
 
 MAJOR version 0 is special though: the 6 month compatibility guarantee doesn't apply there.
 It's meant to be used for development versions.
-It might make sense for the v0 branch to not follow YYMMDD for the middle part of the version but something like YYMMDDHHMMSS.
-E.g. a continuous build tool might be making v0 versions after each commit and then a weekly cronjob just stamps a v1 version tag on the latest green v0 version.
-This scheme allows catering to users desiring rapid releases (they can follow v0) and to users desiring infrequent but stable releases (they can follow v1).
+This is similar how v0 works in semver.
 
 ## Variants
 
@@ -135,10 +133,54 @@ Users can then set this in their .bashrc.
 If something breaks after an update then user can remove that flag from their .bashrc and investigate migration when they have some free time.
 They won't need to interrupt whatever they were doing and go down a migration rabbit hole at the most inappropriate times.
 
+Note that this is just one example way to implement the featver principles, not necessarily the best.
+It just a demonstration that the featver principles can be implemented in creative ways.
+
 ## Example: User interfaces
 
 The user interfaces of desktop and web applications should allow reverting to previous appearances for at least 6 months whenever an UI refresh happens that shuffles the buttons around.
 Just have a settings page somewhere where the user can revert and render the old UI if a user's cookie wants the legacy UI.
+
+## Example: underscore
+
+The motivation section mentioned [https://github.com/jashkenas/underscore/issues/1805](https://github.com/jashkenas/underscore/issues/1805).
+How would featver resolve that?
+
+The issue was that the `template` function changed:
+
+- [1.6.0](https://cdn.statically.io/gh/jashkenas/underscore/1.6.0/index.html#template): `_.template(templateString, [data], [settings])`
+- [1.7.0](https://cdn.statically.io/gh/jashkenas/underscore/1.7.0/index.html#template): `_.template(templateString, [settings])`
+
+Legacy 1.6.0 code:
+
+```
+_.template("Using 'with': <%= data.answer %>", {answer: 'no'}, {variable: 'data'});
+```
+
+When migrating to 1.7.0 the above code had to be changed to this:
+
+```
+_.template("Using 'with': <%= data.answer %>", {variable: 'data'})({answer: 'no'});
+```
+
+And this change had to be made at the same time the update happened.
+This is annoying and makes updates risky because it makes the local code changes cannot be tested in isolation.
+
+With featver underscore v1.140826.0 would have made the multiargument `template` unsupported and would have added a newly supported `template2(templateString, [settings])` function.
+So teams having a nightly test with `underscore-esm-min-stable_features_only.js` would have noticed the incompatibility after the update and could apply the fix of migrating to `template2` when they had time.
+Otherwise `template`'s implementation would have remained `_.template(templateString, [data], [settings])` in the normal version.
+
+The breaking change would have been appeared in v1.150219.0 (equivalent to [1.8.0](https://underscorejs.org/#1.8.0)).
+In there `_.template(templateString, [data], [settings])` could be changed to `_.template(templateString, [settings])` because the multiargument version was unsupported.
+The users had ~6 months to migrate.
+The new 2 argument `template` can be marked as stable.
+Furthermore the previously introduced `template2` would be no longer needed so it can be marked as unsupported and then removed in a future release.
+Users can migrate back to `template` which should be equivalent to `template2` at this point.
+
+The users have to change their code 2 times.
+But both times they have 6 months to do it whenever they have time rather part of a large update that might break many other things too.
+And the second change is very trivial function rename.
+So overall this should be a less risky way to manage changes.
 
 ## Changelog
 
@@ -155,18 +197,46 @@ Recommended tags in priority order:
 - new: this is a new feature, should not cause any problems during upgrades.
 - info: this is not a change, just an informational message.
 
+## Notes
+
+### How strict are the rules? What when urgent incompatible changes are required by sensitive security issue?
+
+There will be cases sometimes when the compatibility has to broken early due to various issues.
+featver should be considered as a set of principles or guidelines to strive for rather than strict rules for.
+It's OK for pragmatism to prevail occasionally.
+This document avoids [RFC 2119](https://datatracker.ietf.org/doc/html/rfc2119) level of precision in order to encourage projects to implement or adjust featver in the way it makes most sense for them.
+
+### Is "unsupported" same as "deprecated"?
+
+It's different but sometimes there's overlap.
+
+New features might start out as an unsupported feature and only get the supported label later.
+But during that time it would make no sense to mark such new unsupported functions as "deprecated".
+
+It's also possible for a legacy API to be deprecated but still supported.
+E.g. in the C example above you could mark `strcmp` as deprecated but still keep it around in the supported feature set.
+
+But if the plan is to delete a feature then in that case it makes sense to mark it as deprecated, then as unsupported, and then actually delete it.
+
 ## Changelog of featver
 
 This is the changelog of this document mostly for the sake of an example and thus a bit exaggerated.
 This document is still a draft, will be marked as v1 once a few people reviewed it.
+Previous releases: https://github.com/ypsu/featver/tags.
+
+**0.[pending].0:**
+
+- new: add the underscore example.
+- new: add a notes section.
+- change: clarify a few things and minor formatting changes.
 
 **0.240804.0:**
 
+- change: mention [zerover](https://0ver.org) and [chronver](https://chronver.org).
+- change: add more Go documentation links as reference.
 - new: mention the monthly and weekly variants.
 - new: highlight that this is a voluntary commitment.
 - new: add the UI example.
-- change: mention [zerover](https://0ver.org) and [chronver](https://chronver.org).
-- change: add more Go documentation links as reference.
 - fix: linkify links so that it works on github.io too.
 - fix: add the github discussions link.
 - fix: fix some other small typos.
