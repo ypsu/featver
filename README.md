@@ -222,7 +222,7 @@ But if the plan is to delete a feature then in that case it makes sense to mark 
 
 This is the changelog of this document mostly for the sake of an example and thus a bit exaggerated.
 This document is still a draft, will be marked as v1 once a few people reviewed it.
-Previous releases: https://github.com/ypsu/featver/tags.
+Previous releases: [https://github.com/ypsu/featver/tags](https://github.com/ypsu/featver/tags).
 
 **0.[pending].0:**
 
