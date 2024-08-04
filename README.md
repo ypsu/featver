@@ -179,7 +179,7 @@ Users can migrate back to `template` which should be equivalent to `template2` a
 
 The users have to change their code 2 times.
 But both times they have 6 months to do it whenever they have time rather part of a large update that might break many other things too.
-And the second change is very trivial function rename.
+And the second change is a very trivial function rename.
 Due to the relaxed timeframe this would have been a less stressful way to make this change.
 
 ## Changelog
