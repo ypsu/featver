@@ -134,7 +134,7 @@ If something breaks after an update then user can remove that flag from their .b
 They won't need to interrupt whatever they were doing and go down a migration rabbit hole at the most inappropriate times.
 
 Note that this is just one example way to implement the featver principles, not necessarily the best.
-It just a demonstration that the featver principles can be implemented in creative ways.
+It is just a demonstration that the featver principles can be implemented in creative ways.
 
 ## Example: User interfaces
 
