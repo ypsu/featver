@@ -227,7 +227,7 @@ This is the changelog of this document mostly for the sake of an example and thu
 This document is still a draft, will be marked as v1 once a few people reviewed it.
 Previous releases: [https://github.com/ypsu/featver/tags](https://github.com/ypsu/featver/tags).
 
-**0.[pending].0:**
+**0.240805.0:**
 
 - new: add the underscore example.
 - new: add a notes section.
