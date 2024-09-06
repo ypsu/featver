@@ -221,11 +221,28 @@ E.g. in the C example above you could mark `strcmp` as deprecated but still keep
 
 But if the plan is to delete a feature then in that case it makes sense to mark it as deprecated, then as unsupported, and then actually delete it.
 
+### Are there other similar versioning schemes?
+
+Yes.
+In terms of intent [BreakVer](https://www.taoensso.com/break-versioning) comes to closest to featver.
+It also acknowledges the impracticality of semver and allows breaking changes in the minor field.
+
+[StableVer](https://gist.github.com/brandonbloom/465625acaf0120354614e7fc0c117c62) is similar too that it separates stable and unstable features and demands smooth transition for breaking changes.
+It still restricts most breaking changes to major bumps only though.
+
+For reference [https://lobste.rs/s/mkaigy/solover_is_simple_expressive_versioning#c_2ruerf](https://lobste.rs/s/mkaigy/solover_is_simple_expressive_versioning#c_2ruerf) lists many other versioning schemes.
+Not all of them are semver patterned.
+featver is semver patterned so that it can be used for Go modules where semver is required.
+
 ## Changelog of featver
 
 This is the changelog of this document mostly for the sake of an example and thus a bit exaggerated.
 This document is still a draft, will be marked as v1 once a few people reviewed it.
 Previous releases: [https://github.com/ypsu/featver/tags](https://github.com/ypsu/featver/tags).
+
+**0.240906.0:**
+
+- new: mention more versioning schemes.
 
 **0.240805.0:**
 
