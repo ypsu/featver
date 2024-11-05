@@ -152,6 +152,9 @@ They won't need to interrupt whatever they were doing and go down a migration ra
 Note that this is just one example way to implement the featver principles, not necessarily the best.
 It is just a demonstration that the featver principles can be implemented in creative ways.
 
+In a more disruptive alternative stable features could be removed right away but still available in a toolname-unstable version of the tool.
+Both toolname and toolname-unstable versions would be installed by default so that users can easily switch to the more featureful unstable version that will keep the newly deprecated feature for 6 more months.
+
 ## Example: User interfaces
 
 The user interfaces of desktop and web applications should allow reverting to previous appearances for at least 6 months whenever an UI refresh happens that shuffles the buttons around.
@@ -258,7 +261,7 @@ Previous releases: [https://github.com/ypsu/featver/tags](https://github.com/yps
 
 **0.241105.0:**
 
-- new: expand the Go and C examples with an alternative.
+- new: expand the Go, C, and CLI examples with an alternative.
 
 **0.240906.0:**
 
