@@ -104,6 +104,16 @@ The users can then run their nightly stability test with `go test -tags=stable_f
 If a stable feature gets downgraded into unsupported then the users get a warning from their nightly test that they have 6 months to fix.
 But otherwise they can continue having up to date dependencies, no need to hold back updates and risk being open to bugs and exploits.
 
+## Example: Go modules alternative
+
+A simpler but more disruptive alternative to the above would be to put the unstable functions into a separate package.
+E.g. if the main functions are in mypkg then the unstable ones could be in mypkgunstable.
+mypkgunstable would also alias all symbols from mypkg.
+
+When a stable function gets deprecated then the user can change their imports to import mypkgunstable under the mypkg alias.
+So deprecating functions won't need immediate code changes, only immediate import changes.
+When the user refactored their code away from the deprecated function then they can change the import back to the mypkg one (the stable one).
+
 ## Example: C library
 
 A C library could implement unsupported features like this:
@@ -124,6 +134,12 @@ char *strcpy(char *dst, const char *src);
 
 The user can run their nightly stability test with `-DSTABLE_FEATURES_ONLY=1`.
 When `strcpy` gets unsupported (i.e. moved into the `#ifndef` section above) they get a nighthly test failure and have 6 months to fix it before `strcpy` gets removed for good.
+
+## Example: C library alternative
+
+Similarly to the Go alternative above the unstable functions could live in a "mypkg-unstable.h" header.
+Deprecating a function (moving it from the stable to the unstable section) would create disruptive compilation failures.
+But users can quickly get things compiling again after a new release with a single header change and leave the refactoring work to a later point.
 
 ## Example: CLI tools
 
@@ -239,6 +255,10 @@ featver is semver patterned so that it can be used for Go modules where semver i
 This is the changelog of this document mostly for the sake of an example and thus a bit exaggerated.
 This document is still a draft, will be marked as v1 once a few people reviewed it.
 Previous releases: [https://github.com/ypsu/featver/tags](https://github.com/ypsu/featver/tags).
+
+**0.241105.0:**
+
+- new: expand the Go and C examples with an alternative.
 
 **0.240906.0:**
 
