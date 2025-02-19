@@ -5,8 +5,9 @@ A featver versioned software commits to these principles:
 
 1. Uses MAJOR.YYMMDD.PATCH as its versioning scheme.
 2. Separates the stable and unsupported features in documentation and provides tooling to disable unsupported features.
-3. Keeps stable features for at least 6 months before removing them within a MAJOR version.
-4. Publishes a changelog that documents changes in the stable features.
+3. Stable features can be downgraded to unsupported features within a major version if and only if the release removing it is the first release in a year.
+4. Unsupported features can be removed within a major version if and only if the release removing it is the first release in a year.
+5. Publishes a changelog that documents changes in the stable features.
 
 featver is mostly compatible with semver and semver rules apply to featver too.
 The biggest difference is in how the middle part is handled: featver replaces MINOR with YYMMDD.
@@ -14,14 +15,16 @@ This means that semver's rules about MINOR version bumps don't apply to featver.
 
 These commitments are voluntary.
 But giving such commitment signals that a piece of software deeply cares about its users and wants to ensure its users have a smooth ride through its rapidly changing features.
-6 months is the minimum, it can be more.
 Gold standard is Go: new Go versions never break older Go versions.
 But such standard is impractical for most small software.
+
+Sidenote: if the above too much then even adopting the scheme and a more relaxed "breaking change only at YY boundaries" rule already makes things more predictable.
+Do that as the first step.
 
 ## Motivation
 
 As of 2024 the established versioning scheme is semver.
-But its very strict: it does not allow evolving software in place.
+But it is very strict: it does not allow evolving software in place.
 People who try to evolve software through MINOR changes break others and cause drama.
 Or if they don't want that then they would need to keep broken APIs forever around until the next MAJOR update which might come never for stable projects.
 Or they just give up on semver altogether and use [zerover](https://0ver.org).
@@ -49,14 +52,16 @@ On the other hand changes are often necessary.
 
 featver suggests a compromise to alleviate this tension.
 Categorize features into two, stable and unsupported, and allow the users to restrict themselves to the stable feature set only.
-To remove a stable feature: mark it as unsupported and remove it 6 months or later.
+To remove a stable feature: mark it as unsupported in a year's first release and then remove the next year's first release.
+This ensures that breaking changes can happen only once a year and they can only be expected if the YY part of the version string changes.
+This way such changes happen in a predictable manner.
 
-Make it possible to easily enable and disable the unsupported features.
+Software using featver should make it possible to easily enable and disable the unsupported features.
 This toggle ability is featver's key feature, hence its name.
 See the examples below how to achieve this technically.
 
 Users preferring stability can opt into the stable mode.
-If a stable feature gets downgraded into unsupported then they can switch to the unsupported mode and have 6 months to update their code and workflows to be stable compatible again.
+If a stable feature gets downgraded into unsupported then they can switch to the unsupported mode and have a year to update their code and workflows to be stable compatible again.
 The changelog should provide instructions how to migrate.
 This significantly reduces the stress coming from updates.
 
@@ -70,7 +75,9 @@ The MAJOR.YYMMDD.PATCH versioning scheme has 3 components:
   When this version is bumped then users of the software are expected to manually update because this change can contain many breaking changes.
 - YYMMDD: This is the date when the release was made.
   The aim of using a date here is to aid the software users clear expectations about the nature of changes between versions.
-  If the date between two versions is less than 6 months, the update can be considered safe and any small incompatibility should be easily resolvable per instructions in the changelog.
+  If the YY part doesn't change during an update then the update can be considered safe.
+  If the YY part does change during an update then then the user can expect to make some changes.
+  The changes stemming from updates are more predictable this way solely by looking at the version number change.
 - PATCH: This is meant for small bugfixes.
   This should contain no breaking changes in the stable feature set compared to a previous PATCH release in the same MAJOR.YYMMDD version.
 
@@ -78,7 +85,7 @@ The MAJOR.YYMMDD.PATCH versioning scheme has 3 components:
 
 The MAJOR part of the version number is manually incremented whenever an incompatible change is being made or otherwise a manual update is desired.
 
-MAJOR version 0 is special though: the 6 month compatibility guarantee doesn't apply there.
+MAJOR version 0 is special though: the feature stability guarantee doesn't apply there.
 It's meant to be used for development versions.
 This is similar how v0 works in semver.
 
@@ -89,6 +96,10 @@ Some systems might impose limits on the version number components such as they h
 
 In that case a MAJOR.YYMM.PATCH (month resolution) or MAJOR.YYWW.PATCH (week resolution) could work just as well in exchange for a reduced max release cadence.
 If going with the week version then use ISO weeks as generated via `date +%g%V` on linux: 2021-01-02 in YYWW format is 2053.
+
+If releases are expected to be rare then a MAJOR.YYR.PATCH could work too.
+R is "release", a number that increases by one on each release.
+This allows for short version numbers.
 
 ## Example: Go modules
 
@@ -101,7 +112,7 @@ A featver Go module breaks Go module versioning commitments so tread carefully.
 Put all unsupported functions into files guarded with the `//go:build !stable_features_only` [build constraint](https://pkg.go.dev/cmd/go#hdr-Build_constraints).
 This means that `-tags=stable_features_only` builds won't include these files.
 The users can then run their nightly stability test with `go test -tags=stable_features_only`.
-If a stable feature gets downgraded into unsupported then the users get a warning from their nightly test that they have 6 months to fix.
+If a stable feature gets downgraded into unsupported then the users get a warning from their nightly test that they have about a year to fix.
 But otherwise they can continue having up to date dependencies, no need to hold back updates and risk being open to bugs and exploits.
 
 ## Example: Go modules alternative
@@ -133,7 +144,7 @@ char *strcpy(char *dst, const char *src);
 ```
 
 The user can run their nightly stability test with `-DSTABLE_FEATURES_ONLY=1`.
-When `strcpy` gets unsupported (i.e. moved into the `#ifndef` section above) they get a nighthly test failure and have 6 months to fix it before `strcpy` gets removed for good.
+When `strcpy` gets unsupported (i.e. moved into the `#ifndef` section above) they get a nighthly test failure and have about a year to fix it before `strcpy` gets removed for good.
 
 ## Example: C library alternative
 
@@ -153,11 +164,11 @@ Note that this is just one example way to implement the featver principles, not 
 It is just a demonstration that the featver principles can be implemented in creative ways.
 
 In a more disruptive alternative stable features could be removed right away but still available in a toolname-unstable version of the tool.
-Both toolname and toolname-unstable versions would be installed by default so that users can easily switch to the more featureful unstable version that will keep the newly deprecated feature for 6 more months.
+Both toolname and toolname-unstable versions would be installed by default so that users can easily switch to the more featureful unstable version that will keep the newly deprecated feature for about a year.
 
 ## Example: User interfaces
 
-The user interfaces of desktop and web applications should allow reverting to previous appearances for at least 6 months whenever an UI refresh happens that shuffles the buttons around.
+The user interfaces of desktop and web applications should allow reverting to previous appearances for about a year whenever an UI refresh happens that shuffles the buttons around.
 Just have a settings page somewhere where the user can revert and render the old UI if a user's cookie wants the legacy UI.
 
 ## Example: underscore
@@ -185,19 +196,19 @@ _.template("Using 'with': <%= data.answer %>", {variable: 'data'})({answer: 'no'
 And this change had to be made at the same time the update happened.
 This is annoying and makes updates risky because the local code changes cannot be tested in isolation.
 
-With featver underscore v1.140826.0 would have made the multiargument `template` unsupported and would have added a newly supported `template2(templateString, [settings])` function.
+With featver underscore v1.140210.0 (equivalent to [1.6.0](https://underscorejs.org/#1.6.0) would have made the multiargument `template` unsupported and would have added a newly supported `template2(templateString, [settings])` function.
 So teams having a nightly test with `underscore-esm-min-stable_features_only.js` would have noticed the incompatibility after the update and could apply the fix of migrating to `template2` when they had time.
 Otherwise `template`'s implementation would have remained `_.template(templateString, [data], [settings])` in the normal version.
 
 The breaking change would have been appeared in v1.150219.0 (equivalent to [1.8.0](https://underscorejs.org/#1.8.0)).
 In there `_.template(templateString, [data], [settings])` can be changed to `_.template(templateString, [settings])` because the multiargument version was unsupported.
-The users had ~6 months to migrate.
+The users had about a year to migrate.
 The new 2 argument `template` can be marked as stable.
 Furthermore the previously introduced `template2` would be no longer needed so it can be marked as unsupported and then removed in a future release.
 Users can migrate back to `template` which should be equivalent to `template2` at this point.
 
 The users have to change their code 2 times.
-But both times they have 6 months to do it whenever they have time rather part of a large update that might break many other things too.
+But both times they have about a year to do it whenever they have time rather part of a large update that might break many other things too.
 And the second change is a very trivial function rename.
 Due to the relaxed timeframe this would have been a less stressful way to make this change.
 
@@ -210,7 +221,7 @@ Perhaps prefix each change with a tag for clarity.
 Recommended tags in priority order:
 
 - remove: removes an unsupported feature.
-- unsupport: this marks a feature as unsupported which can get removed 6 months later (no such guarantee on the v0 branch).
+- unsupport: this marks a feature as unsupported which can get removed the next year's first release (no such guarantee on the v0 branch).
 - change: this alters behaviour but should not cause any problems during upgrades (except on the v0 branch).
 - fix: this fixes a bug, should not cause any problems during upgrades.
 - new: this is a new feature, should not cause any problems during upgrades.
@@ -236,7 +247,7 @@ New features might start out as an unsupported feature and only get the supporte
 But during that time it would make no sense to mark such new unsupported functions as "deprecated".
 
 It's also possible for a legacy API to be deprecated but still supported.
-E.g. in the C example above you could mark `strcmp` as deprecated but still keep it around in the supported feature set.
+E.g. in the C example above you could mark `strcpy` as deprecated but still keep it around in the supported feature set.
 
 But if the plan is to delete a feature then in that case it makes sense to mark it as deprecated, then as unsupported, and then actually delete it.
 
@@ -258,6 +269,10 @@ featver is semver patterned so that it can be used for Go modules where semver i
 This is the changelog of this document mostly for the sake of an example and thus a bit exaggerated.
 This document is still a draft, will be marked as v1 once a few people reviewed it.
 Previous releases: [https://github.com/ypsu/featver/tags](https://github.com/ypsu/featver/tags).
+
+**0.250219.0**
+
+- change: changed the requirements to allow breaking changes only in the year's first release to make everything more predictable.
 
 **0.241105.0:**
 
